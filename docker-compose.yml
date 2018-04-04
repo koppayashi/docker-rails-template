@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   db:
     image: mysql:5.7.20
@@ -13,6 +13,8 @@ services:
     environment:
       RAILS_ENV: development
       RAILS_RELATIVE_URL_ROOT: /
+      DEV_DB_PASSWORD: passw0rd
+      DEV_DB_HOST: db
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     ports:
       - '3000:3000'
