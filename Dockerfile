@@ -32,7 +32,6 @@ ENV APP_ROOT /usr/src/project_name/
 RUN mkdir -p $APP_ROOT && \
     apk upgrade --no-cache && \
     apk add --update --no-cache \
-    bash \
     libxml2-dev \
     libxslt-dev \
     mariadb-dev \
