@@ -7,28 +7,26 @@
 #   gem 'mysql2'
 #
 # And be sure to use new-style password hashing:
-#   http://dev.mysql.com/doc/refman/5.7/en/old-client.html
+#   https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html
 #
 default: &default
   adapter: mysql2
-  encoding: utf8mb4
-  charset: utf8mb4
-  collation: utf8mb4_general_ci
+  encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password: <%= ENV.fetch('DEV_DB_PASSWORD') %>
-  host: <%= ENV.fetch('DEV_DB_HOST') %>
+  password: <%= ENV['RAILS_DB_PASSWORD'] %>
+  host: <%= ENV['RAILS_DB_HOST'] %>
 
 development:
   <<: *default
-  database: project_name_development
+  database: app_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: project_name_test
+  database: app_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -51,6 +49,6 @@ test:
 #
 production:
   <<: *default
-  database: project_name_production
-  username: project_name
-  password: <%= ENV['PROJECT_NAME_DATABASE_PASSWORD'] %>
+  database: app_production
+  username: app
+  password: <%= ENV['APP_DATABASE_PASSWORD'] %>

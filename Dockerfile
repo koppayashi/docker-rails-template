@@ -1,6 +1,6 @@
 FROM ruby:2.5.1-alpine as builder
 
-ENV APP_ROOT /usr/src/project_name/
+ENV APP_ROOT /app
 
 RUN mkdir -p $APP_ROOT && \
     apk upgrade --no-cache && \
@@ -25,9 +25,10 @@ RUN echo 'install: --no-document' > ~/.gemrc && \
 
 FROM ruby:2.5.1-alpine
 
-ENV LANG ja-JP.UTF-8
+ARG RAILS_ENV="development"
 
-ENV APP_ROOT /usr/src/project_name/
+ENV LANG ja-JP.UTF-8
+ENV APP_ROOT /app
 
 RUN mkdir -p $APP_ROOT && \
     apk upgrade --no-cache && \
@@ -50,7 +51,9 @@ COPY Gemfile.lock Gemfile.lock
 COPY --from=builder /usr/local/bundle /usr/local/bundle
 COPY . $APP_ROOT
 
-#RUN rails assets:precompile RAILS_ENV=production
+RUN if [ $RAILS_ENV != "development" ]; then RAILS_ENV=$RAILS_ENV bundle exec rails assets:precompile --trace; fi
 
-#EXPOSE 3000
-#CMD ["rails", "server", "-b", "0.0.0.0"]
+VOLUME ["/app/public", "/app/tmp"]
+
+EXPOSE 3000
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
